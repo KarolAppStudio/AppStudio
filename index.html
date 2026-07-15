@@ -3,431 +3,575 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KarolAppStudio | Premium App Development</title>
+    <title>KarolAppStudio</title>
+    <!-- Google Fonts for Modern Typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome for standard icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
     <style>
-        /* --- Design System & Reset --- */
+        /* Modern CSS Variables & Reset */
+        :root {
+            --bg-dark: #090a0f;
+            --bg-card: rgba(15, 18, 28, 0.7);
+            --text-main: #ffffff;
+            --text-muted: #8b949e;
+            --primary: #00a2ff;
+            --secondary: #a333ff;
+            --gradient: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            --border: rgba(255, 255, 255, 0.08);
+        }
+
         * {
+            box-sizing: border-box;
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            font-family: 'Inter', sans-serif;
             scroll-behavior: smooth;
         }
 
-        :root {
-            --bg-color: #0b0c10;
-            --card-bg: #1f2833;
-            --text-primary: #ffffff;
-            --text-secondary: #c5c6c7;
-            --accent-blue: #00a8ff;
-            --accent-purple: #9b51e0;
-            --gradient-primary: linear-gradient(135deg, #00a8ff 0%, #9b51e0 100%);
-        }
-
         body {
-            background-color: var(--bg-color);
-            color: var(--text-primary);
+            background-color: var(--bg-dark);
+            color: var(--text-main);
             overflow-x: hidden;
             line-height: 1.6;
         }
 
-        /* --- Header / Navigation --- */
-        header {
+        /* Subtle animated background glow */
+        body::before {
+            content: '';
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            padding: 1rem 5%;
+            top: -20%;
+            left: -10%;
+            width: 60vw;
+            height: 60vw;
+            background: radial-gradient(circle, rgba(0, 162, 255, 0.07) 0%, transparent 70%);
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        body::after {
+            content: '';
+            position: fixed;
+            bottom: -20%;
+            right: -10%;
+            width: 50vw;
+            height: 50vw;
+            background: radial-gradient(circle, rgba(163, 51, 255, 0.07) 0%, transparent 70%);
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        /* Header Navigation */
+        header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background: rgba(11, 12, 16, 0.85);
-            backdrop-filter: blur(10px);
+            padding: 1.5rem 5%;
+            position: sticky;
+            top: 0;
+            background: rgba(9, 10, 15, 0.8);
+            backdrop-filter: blur(12px);
             z-index: 1000;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            border-bottom: 1px solid var(--border);
         }
 
-        .logo-container {
-            display: flex;
-            align-items: center;
-        }
-
-        .logo-img {
-            height: 50px; /* Adjust height based on your preference */
-            width: auto;
-            object-fit: contain;
+        .logo-container img {
+            /* Handled per instruction: scaled up/tripled visual footprint */
+            height: auto;
+            width: 240px; 
+            max-width: 100%;
+            display: block;
             transition: transform 0.3s ease;
         }
 
-        .logo-img:hover {
-            transform: scale(1.05);
+        .logo-container img:hover {
+            transform: scale(1.02);
         }
 
-        nav ul {
+        /* Desktop Menu */
+        .desktop-nav {
             display: flex;
-            list-style: none;
-            gap: 2rem;
+            gap: 2.5rem;
         }
 
-        nav a {
-            color: var(--text-secondary);
+        .desktop-nav a {
+            color: var(--text-main);
             text-decoration: none;
             font-weight: 500;
-            transition: color 0.3s ease;
+            font-size: 1rem;
             position: relative;
+            transition: color 0.3s ease;
         }
 
-        nav a:hover, nav a.active {
-            color: var(--accent-blue);
+        .desktop-nav a:hover {
+            color: var(--primary);
         }
 
-        nav a::after {
+        .desktop-nav a::after {
             content: '';
             position: absolute;
             width: 0;
             height: 2px;
-            bottom: -5px;
+            bottom: -6px;
             left: 0;
-            background: var(--gradient-primary);
+            background: var(--gradient);
             transition: width 0.3s ease;
         }
 
-        nav a:hover::after {
+        .desktop-nav a:hover::after {
             width: 100%;
         }
 
-        /* --- Global Sections & Animations --- */
-        section {
-            padding: 8rem 10% 4rem 10%;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            opacity: 0;
-            transform: translateY(40px);
-            animation: fadeInUp 1s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+        /* Mobile Dropdown Menu */
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--text-main);
+            font-size: 1.5rem;
+            cursor: pointer;
+            z-index: 1001;
         }
 
-        @keyframes fadeInUp {
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        .mobile-dropdown {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            width: 100%;
+            background: rgba(15, 18, 28, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+            flex-direction: column;
+            padding: 1rem 0;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            transform: translateY(-10px);
+            opacity: 0;
+            transition: transform 0.3s ease, opacity 0.3s ease;
+            pointer-events: none;
+        }
+
+        .mobile-dropdown.active {
+            display: flex;
+            transform: translateY(0);
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .mobile-dropdown a {
+            color: var(--text-main);
+            text-decoration: none;
+            padding: 1rem 5%;
+            font-size: 1.1rem;
+            font-weight: 500;
+            border-left: 3px solid transparent;
+        }
+
+        .mobile-dropdown a:hover {
+            background: rgba(255,255,255,0.03);
+            border-left-color: var(--primary);
+            color: var(--primary);
+        }
+
+        /* General Section Styling */
+        section {
+            padding: 6rem 5%;
+            max-width: 1200px;
+            margin: 0 auto;
         }
 
         .section-title {
             font-size: 2.5rem;
-            margin-bottom: 2rem;
-            text-align: center;
-            background: var(--gradient-primary);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            font-weight: 700;
+            margin-bottom: 3rem;
             position: relative;
-        }
-
-        /* --- Hero Section --- */
-        #home {
-            text-align: center;
-            align-items: center;
-            justify-content: center;
-            background: radial-gradient(circle at 50% 50%, rgba(155, 81, 224, 0.1) 0%, transparent 60%);
-        }
-
-        .hero-tagline {
-            font-size: 3.5rem;
-            font-weight: 800;
-            margin-bottom: 1rem;
-            letter-spacing: -1px;
-        }
-
-        .hero-sub {
-            font-size: 1.25rem;
-            color: var(--text-secondary);
-            max-width: 600px;
-            margin-bottom: 2.5rem;
-        }
-
-        .btn {
             display: inline-block;
-            padding: 0.8rem 2rem;
-            border-radius: 30px;
-            text-decoration: none;
-            font-weight: 600;
-            color: white;
-            background: var(--gradient-primary);
-            background-size: 200% auto;
-            transition: 0.5s;
-            box-shadow: 0 4px 15px rgba(0, 168, 255, 0.3);
         }
 
-        .btn:hover {
-            background-position: right center;
-            box-shadow: 0 4px 25px rgba(155, 81, 224, 0.5);
-            transform: translateY(-2px);
+        .section-title::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: -10px;
+            width: 50px;
+            height: 4px;
+            background: var(--gradient);
+            border-radius: 2px;
         }
 
-        /* --- Apps Grid Section --- */
-        .apps-container {
+        /* Modern Entrance Animations */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Apps Grid & Cards Section */
+        .apps-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
             gap: 2.5rem;
-            margin-top: 2rem;
         }
 
         .app-card {
-            background: var(--card-bg);
+            background: var(--bg-card);
+            border: 1px solid var(--border);
             border-radius: 16px;
             padding: 2.5rem;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            text-align: center;
+            backdrop-filter: blur(8px);
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s ease, box-shadow 0.4s ease;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .app-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: var(--gradient-primary);
-            opacity: 0;
-            transition: opacity 0.4s ease;
-            z-index: 0;
+            align-items: center;
         }
 
         .app-card:hover {
-            transform: translateY(-10px);
-            border-color: rgba(0, 168, 255, 0.4);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
-        }
-
-        .app-card-content {
-            position: relative;
-            z-index: 1;
+            transform: translateY(-8px);
+            border-color: rgba(0, 162, 255, 0.4);
+            box-shadow: 0 12px 40px rgba(0, 162, 255, 0.1);
         }
 
         .app-icon {
-            font-size: 3rem;
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, rgba(0, 162, 255, 0.1) 0%, rgba(163, 51, 255, 0.1) 100%);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.2rem;
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .app-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.75rem;
+            font-weight: 600;
+        }
+
+        .app-card p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            margin-bottom: 2rem;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.8rem 2rem;
+            background: var(--gradient);
+            color: white;
+            text-decoration: none;
+            border-radius: 30px;
+            font-weight: 600;
+            transition: opacity 0.3s ease, transform 0.2s ease;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            opacity: 0.9;
+            transform: scale(1.02);
+        }
+
+        /* About Us Layout */
+        .about-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .about-text p {
+            color: var(--text-muted);
+            margin-bottom: 1.5rem;
+            font-size: 1.05rem;
+        }
+
+        .about-visual {
+            position: relative;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 2.5rem;
+            text-align: center;
+        }
+
+        .about-visual i {
+            font-size: 6rem;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
             margin-bottom: 1.5rem;
         }
 
-        .app-title {
-            font-size: 1.5rem;
+        /* Contact Us Form Layout */
+        .contact-container {
+            display: grid;
+            grid-template-columns: 1fr 1.5fr;
+            gap: 4rem;
+        }
+
+        .contact-info h4 {
+            font-size: 1.3rem;
             margin-bottom: 1rem;
         }
 
-        .app-description {
-            color: var(--text-secondary);
-            margin-bottom: 2rem;
-            font-size: 0.95rem;
-        }
-
-        .app-link {
-            position: relative;
-            z-index: 1;
-            align-self: flex-start;
-            margin-top: auto;
-        }
-
-        /* --- About Us Section --- */
-        .about-content {
-            max-width: 800px;
-            margin: 0 auto;
-            text-align: center;
-        }
-
-        .about-text {
-            font-size: 1.15rem;
-            color: var(--text-secondary);
+        .contact-info p {
+            color: var(--text-muted);
             margin-bottom: 2rem;
         }
 
-        /* --- Contact Us Section --- */
-        .contact-container {
-            max-width: 600px;
-            margin: 0 auto;
-            width: 100%;
+        .contact-details {
+            list-style: none;
+        }
+
+        .contact-details li {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            color: var(--text-muted);
+        }
+
+        .contact-details i {
+            color: var(--primary);
+        }
+
+        .contact-form {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            padding: 3rem;
+            border-radius: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
         }
 
         .form-group {
-            margin-bottom: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
         }
 
         .form-group label {
-            display: block;
-            margin-bottom: 0.5rem;
-            color: var(--text-secondary);
             font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--text-muted);
         }
 
-        .form-control {
-            width: 100%;
+        .form-group input, .form-group textarea {
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid var(--border);
             padding: 1rem;
-            background: var(--card-bg);
-            border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 8px;
             color: white;
-            outline: none;
+            font-size: 1rem;
             transition: border-color 0.3s ease;
         }
 
-        .form-control:focus {
-            border-color: var(--accent-blue);
+        .form-group input:focus, .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary);
         }
 
-        textarea.form-control {
-            resize: vertical;
-            min-height: 150px;
-        }
-
-        .submit-btn {
-            width: 100%;
-            border: none;
-            cursor: pointer;
-            padding: 1rem;
-            font-size: 1rem;
-        }
-
-        /* --- Footer --- */
+        /* Footer Section */
         footer {
+            border-top: 1px solid var(--border);
+            padding: 3rem 5%;
             text-align: center;
-            padding: 2rem;
-            color: rgba(255, 255, 255, 0.4);
-            font-size: 0.85rem;
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            color: var(--text-muted);
+            font-size: 0.9rem;
         }
 
-        /* Delay triggers for sequential scroll animation feel */
-        #apps { animation-delay: 0.2s; }
-        #about { animation-delay: 0.4s; }
-        #contact { animation-delay: 0.6s; }
+        /* Responsive Breakpoints */
+        @media (max-width: 900px) {
+            .desktop-nav {
+                display: none;
+            }
 
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            nav ul { display: none; } /* Simplified for code structure brevity */
-            .hero-tagline { font-size: 2.5rem; }
-            section { padding: 6rem 5% 2rem 5%; }
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .about-container, .contact-container {
+                grid-template-columns: 1fr;
+                gap: 3rem;
+            }
+
+            .logo-container img {
+                width: 180px; /* Adapts scale gracefully on mobile viewports */
+            }
         }
     </style>
 </head>
 <body>
 
-    <!-- Header & Logo Placement -->
+    <!-- Main Navigation Header Bar -->
     <header>
         <div class="logo-container">
-            <!-- Reference to your attached Logo -->
-            <img src="Logo.png" alt="KarolAppStudio Logo" class="logo-img">
+            <!-- Tripled display frame size layout referencing Logo.png -->
+            <img src="Logo.png" alt="KarolAppStudio Logo">
         </div>
-        <nav>
-            <ul>
-                <li><a href="#home" class="active">Home</a></li>
-                <li><a href="#apps">Our Apps</a></li>
-                <li><a href="#about">About Us</a></li>
-                <li><a href="#contact">Contact Us</a></li>
-            </ul>
+        
+        <!-- Desktop Navigation links -->
+        <nav class="desktop-nav">
+            <a href="#apps">Apps</a>
+            <a href="#about">About Us</a>
+            <a href="#contact">Contact Us</a>
         </nav>
+
+        <!-- Dynamic Menu Button for Mobile Browsing -->
+        <button class="mobile-menu-btn" onclick="toggleMobileMenu()" aria-label="Toggle Navigation Menu">
+            <i class="fa-solid fa-bars"></i>
+        </button>
+
+        <!-- Dropdown layout panel visible on Mobile Viewports -->
+        <div class="mobile-dropdown" id="mobileDropdown">
+            <a href="#apps" onclick="toggleMobileMenu()">Apps</a>
+            <a href="#about" onclick="toggleMobileMenu()">About Us</a>
+            <a href="#contact" onclick="toggleMobileMenu()">Contact Us</a>
+        </div>
     </header>
 
-    <!-- Hero / Introduction Section -->
-    <section id="home">
-        <h1 class="hero-tagline">Crafting Immersive Digital Experiences</h1>
-        <p class="hero-sub">Welcome to KarolAppStudio. We build beautiful, high-performance applications designed to simplify and elevate your daily digital interactions.</p>
-        <a href="#apps" class="btn">Explore Our Apps</a>
-    </section>
-
-    <!-- Apps Showcase Section -->
+    <!-- Hosted Application Portfolio Gallery Layout Section -->
     <section id="apps">
-        <h2 class="section-title">Our Applications</h2>
-        <div class="apps-container">
+        <h2 class="section-title reveal">Our Applications</h2>
+        <div class="apps-grid">
             
-            <!-- ReadingsApp Card -->
-            <div class="app-card">
-                <div class="app-card-content">
-                    <div class="app-icon">📚</div>
-                    <h3 class="app-title">ReadingsApp</h3>
-                    <p class="app-description">A simple app for following daily Bible readings based on the Christadelphian Bible Reading Companion by Robert Roberts, with support for multiple Indian language Bibles.</p>
+            <!-- App Card Entry: ReadingsApp -->
+            <div class="app-card reveal">
+                <div class="app-icon">
+                    <i class="fa-solid fa-book-open"></i>
                 </div>
-                <a href="https://github.com/KarolAppStudio/ReadingsApp/releases/download/ReadingsApp/DailyReadingCompanion.v1.0.apk" target="_blank" class="btn app-link">Download App</a>
+                <div>
+                    <h3>ReadingsApp</h3>
+                    <p>A simple app for following daily Bible readings based on the Christadelphian Bible Reading Companion by Robert Roberts, with support for multiple Indian language Bibles.</p>
+                </div>
+                <a href="https://github.com/KarolAppStudio/ReadingsApp/releases/download/ReadingsApp/DailyReadingCompanion.v1.0.apk" target="_blank" class="btn app-link" target="_blank" class="btn">
+                    Downlaod App <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                </a>
             </div>
 
-            <!-- Future App Placeholder to maintain grid aesthetics -->
-            <div class="app-card">
-                <div class="app-card-content">
-                    <div class="app-icon">⚡</div>
-                    <h3 class="app-title">Coming Soon</h3>
-                    <p class="app-description">We're cooking up something powerful. Stay tuned for our next innovative software release designed to push technical boundaries.</p>
+            <!-- Future App Slots Placeholder Example -->
+            <div class="app-card reveal" style="opacity: 0.5;">
+                <div class="app-icon">
+                    <i class="fa-solid fa-laptop-code"></i>
                 </div>
-                <a href="#contact" class="btn app-link" style="background: #333; box-shadow: none;">Get Updates</a>
+                <div>
+                    <h3>Next Project</h3>
+                    <p>An innovative tool currently in incubation. Stay tuned for our upcoming launch updates.</p>
+                </div>
+                <button class="btn" style="background: #333; cursor: not-allowed;" disabled>Coming Soon</button>
             </div>
 
         </div>
     </section>
 
-    <!-- About Us Section -->
+    <hr style="border: none; border-bottom: 1px solid var(--border); max-width: 1200px; margin: 0 auto;">
+
+    <!-- About Us Structural Profile Section -->
     <section id="about">
-        <h2 class="section-title">About KarolAppStudio</h2>
-        <div class="about-content">
-            <p class="about-text">
-                Tech enthusiast passionate about building practical utilities for Handheld devices that make everyday life simpler and more efficient.
-            </p>
-            <p class="about-text">
-                I prioritize the end-user experience above all else—ensuring every product we deploy is lightning-fast, visually polished, and highly reliable.
-            </p>
+        <div class="about-container">
+            <div class="about-text reveal">
+                <h2 class="section-title">About Us</h2>
+                <p>Welcome to KarolAppStudio. We excel at translating complex functional specifications into beautiful, scalable, and intuitive mobile and web app platforms.</p>
+                <p>I'm a Tech enthusiast passionate about building practical utilities for Handheld devices that make everyday life simpler and more efficient.</p>
+            </div>
+            <div class="about-visual reveal">
+                <i class="fa-solid fa-cubes-notch"></i>
+                <h3>Stunning Performance</h3>
+                <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 0.5rem;">Engineered flawlessly down to the pixel layer.</p>
+            </div>
         </div>
     </section>
 
-    <!-- Contact Us Section -->
+    <hr style="border: none; border-bottom: 1px solid var(--border); max-width: 1200px; margin: 0 auto;">
+
+    <!-- Contact Us Interaction Form Section -->
     <section id="contact">
-        <h2 class="section-title">Connect With Us</h2>
         <div class="contact-container">
-            <form action="#" method="POST" onsubmit="event.preventDefault(); alert('Message sent successfully!');">
+            <div class="contact-info reveal">
+                <h2 class="section-title">Get In Touch</h2>
+                <p>Have an inquiry, project partnership proposal, or require dedicated technical support? Drop a message here, and we will align right back with you.</p>
+                <ul class="contact-details">
+                    <li><i class="fa-solid fa-envelope"></i> support@karolappstudio.com</li>
+                    <li><i class="fa-solid fa-location-dot"></i> Global Digital Presence</li>
+                </ul>
+            </div>
+            
+            <form class="contact-form reveal" onsubmit="event.preventDefault(); alert('Message simulation submitted successfully!');">
                 <div class="form-group">
-                    <label for="name">Name</label>
-                    <input type="text" id="name" class="form-control" placeholder="Your Name" required>
+                    <label for="name">Full Name</label>
+                    <input type="text" id="name" required placeholder="John Doe">
                 </div>
                 <div class="form-group">
                     <label for="email">Email Address</label>
-                    <input type="email" id="email" class="form-control" placeholder="name@example.com" required>
+                    <input type="email" id="email" required placeholder="john@example.com">
                 </div>
                 <div class="form-group">
-                    <label for="message">Message</label>
-                    <textarea id="message" class="form-control" placeholder="Tell us how we can collaborate..." required></textarea>
+                    <label for="message">Message Details</label>
+                    <textarea id="message" rows="5" required placeholder="How can we cooperate?"></textarea>
                 </div>
-                <button type="submit" class="btn submit-btn">Send Message</button>
+                <button type="submit" class="btn">Send Message <i class="fa-solid fa-paper-plane"></i></button>
             </form>
         </div>
     </section>
 
+    <!-- Footer Copyright Standard Component -->
     <footer>
         <p>&copy; 2026 KarolAppStudio. All rights reserved.</p>
     </footer>
 
-    <!-- Simple Active Link Logic Script -->
+    <!-- Interactive Dropdown Toggle & Scroll Animation Controller Hooks -->
     <script>
-        const sections = document.querySelectorAll('section');
-        const navLinks = document.querySelectorAll('nav a');
+        // Toggle mobile menu state values
+        function toggleMobileMenu() {
+            const dropdown = document.getElementById('mobileDropdown');
+            const menuBtnIcon = document.querySelector('.mobile-menu-btn i');
+            
+            dropdown.classList.toggle('active');
+            
+            if (dropdown.classList.contains('active')) {
+                menuBtnIcon.classList.remove('fa-bars');
+                menuBtnIcon.classList.add('fa-xmark');
+            } else {
+                menuBtnIcon.classList.remove('fa-xmark');
+                menuBtnIcon.classList.add('fa-bars');
+            }
+        }
 
-        window.addEventListener('scroll', () => {
-            let current = '';
-            sections.forEach(section => {
-                const sectionTop = section.offsetTop;
-                const sectionHeight = section.clientHeight;
-                if (pageYOffset >= (sectionTop - sectionHeight / 3)) {
-                    current = section.getAttribute('id');
+        // Lightweight Intersection Observer for on-scroll reveal effects
+        const revealElements = document.querySelectorAll('.reveal');
+        
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    // Stop observing once visible to maintain consistent rendering state
+                    revealObserver.unobserve(entry.target);
                 }
             });
+        }, {
+            threshold: 0.1,
+            rootMargin: "0px 0px -50px 0px"
+        });
 
-            navLinks.forEach(link => {
-                link.classList.remove('active');
-                if (link.getAttribute('href').slice(1) === current) {
-                    link.classList.add('active');
-                }
-            });
+        revealElements.forEach(element => {
+            revealObserver.observe(element);
         });
     </script>
 </body>

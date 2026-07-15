@@ -7,13 +7,11 @@
     <style>
         :root {
             --bg-color: #030712;
-            --card-bg: #090e20;
-            --border-color: #1e293b;
+            --card-bg: #0b1120;
             --neon-blue: #00d2ff;
-            --neon-purple: #b300ff;
-            --text-main: #ffffff;
-            --text-muted: #94a3b8;
-            --gradient: linear-gradient(135deg, #00d2ff 0%, #b300ff 100%);
+            --neon-purple: #9d4edd;
+            --text-main: #f3f4f6;
+            --text-muted: #9ca3af;
         }
 
         * {
@@ -21,684 +19,492 @@
             margin: 0;
             padding: 0;
             font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            scroll-behavior: smooth;
         }
 
         body {
             background-color: var(--bg-color);
             color: var(--text-main);
+            overflow-x: hidden;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
-            align-items: center;
-            overflow-x: hidden;
         }
 
-        /* Perspective Layout Toggle for Demo */
-        .view-toggle {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            z-index: 1000;
-            background: rgba(9, 14, 32, 0.85);
-            border: 1px solid var(--neon-blue);
-            padding: 10px 15px;
-            border-radius: 30px;
-            display: flex;
-            gap: 10px;
-            backdrop-filter: blur(10px);
-            box-shadow: 0 0 15px rgba(0, 210, 255, 0.3);
-        }
-
-        .view-toggle button {
-            background: transparent;
-            border: none;
-            color: var(--text-muted);
-            cursor: pointer;
-            font-weight: 600;
-            padding: 5px 15px;
-            border-radius: 20px;
-            transition: all 0.3s ease;
-        }
-
-        .view-toggle button.active {
-            background: var(--gradient);
-            color: white;
-        }
-
-        /* Main Container setup */
-        .workspace-container {
-            width: 100%;
-            max-width: 1400px;
-            padding: 40px 20px;
-            display: flex;
-            justify-content: center;
-            gap: 40px;
-            transition: all 0.5s ease;
-        }
-
-        /* View Mode Adjustments */
-        .workspace-container.desktop-only .mobile-preview { display: none; }
-        .workspace-container.desktop-only .main-site { width: 100%; max-width: 1000px; }
-        .workspace-container.mobile-only .main-site { display: none; }
-        .workspace-container.mobile-only .mobile-preview { width: 100%; max-width: 450px; }
-
-        /* --- DESKTOP / MAIN SITE STYLES --- */
-        .main-site {
-            width: 70%;
-            display: flex;
-            flex-direction: column;
-            gap: 30px;
-            animation: fadeIn 1s ease-out;
-        }
-
-        /* Large Header Logo Showcase */
-        .brand-showcase {
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-            padding: 20px 0;
-            position: relative;
-        }
-
-        .brand-logo-large {
-            width: 180px; /* Tripled the scale relative to standard nav bar icons */
-            height: auto;
-            filter: drop-shadow(0 0 25px rgba(0, 210, 255, 0.6)) drop-shadow(0 0 40px rgba(179, 0, 158, 0.4));
-            animation: pulse 4s infinite ease-in-out;
-        }
-
-        .brand-title-large {
-            font-size: 2.5rem;
-            font-weight: 800;
-            margin-top: 15px;
-            background: linear-gradient(to right, #ffffff 40%, var(--neon-blue), var(--neon-purple));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            letter-spacing: 1px;
-        }
-
-        /* Navigation Bar */
-        .navbar {
-            background-color: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 15px 30px;
+        /* Header / Navigation */
+        header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            padding: 2rem 5%;
+            max-width: 1400px;
+            width: 100%;
+            margin: 0 auto;
         }
 
-        .nav-logo-area {
+        .logo-container {
             display: flex;
-            align-items: center;
-            gap: 10px;
+            flex-direction: column;
+            align-items: flex-start;
         }
 
-        .nav-logo {
-            width: 50px;
-            height: auto;
+        /* Tripled the size visually based on layout scaling */
+        .logo-img {
+            height: 120px; 
+            width: auto;
+            object-fit: contain;
+            filter: drop-shadow(0 0 15px rgba(0, 210, 255, 0.4));
         }
 
-        .nav-links {
+        .brand-name {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-top: 0.5rem;
+            background: linear-gradient(90deg, #ffffff, var(--neon-blue), var(--neon-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        nav {
+            background: rgba(11, 17, 32, 0.8);
+            padding: 0.75rem 2rem;
+            border-radius: 50px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+        }
+
+        nav ul {
             display: flex;
-            gap: 30px;
+            list-style: none;
+            gap: 2rem;
         }
 
-        .nav-links a {
+        nav a {
             color: var(--text-main);
             text-decoration: none;
+            font-weight: 600;
             font-size: 1.1rem;
-            font-weight: 500;
+            transition: all 0.3s ease;
             position: relative;
-            padding: 5px 0;
-            transition: color 0.3s;
+            padding: 0.25rem 0;
         }
 
-        .nav-links a::after {
+        nav a::after {
             content: '';
             position: absolute;
             bottom: 0;
             left: 0;
             width: 0;
             height: 2px;
-            background: var(--gradient);
+            background: linear-gradient(90deg, var(--neon-blue), var(--neon-purple));
             transition: width 0.3s ease;
         }
 
-        .nav-links a:hover::after {
+        nav a:hover::after, nav a.active::after {
             width: 100%;
         }
 
-        /* Main Content Container Frame */
-        .content-frame {
-            background-color: #040814;
-            border: 1px solid #0d1527;
-            border-radius: 16px;
-            padding: 40px;
-            display: flex;
-            flex-direction: column;
-            gap: 60px;
-            box-shadow: inset 0 0 40px rgba(0, 0, 0, 0.8);
+        nav a:hover {
+            text-shadow: 0 0 10px rgba(0, 210, 255, 0.6);
         }
 
-        .section-title {
-            font-size: 2rem;
-            font-weight: 700;
-            margin-bottom: 25px;
-            position: relative;
-            display: inline-block;
+        /* Main Content & Page System */
+        main {
+            flex: 1;
+            max-width: 1200px;
+            width: 90%;
+            margin: 2rem auto;
         }
 
-        /* App Grid Layout */
+        .page {
+            display: none;
+            animation: fadeIn 0.6s ease forwards;
+        }
+
+        .page.active-page {
+            display: block;
+        }
+
+        h2 {
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            font-weight: 600;
+        }
+
+        /* Apps Grid Layout */
         .apps-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-            gap: 25px;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 4rem;
         }
 
         .app-card {
-            background: linear-gradient(145deg, #070c1e, #0c1432);
-            border: 1px solid var(--border-color);
+            background-color: var(--card-bg);
             border-radius: 16px;
-            padding: 30px 20px;
+            padding: 2.5rem 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.05);
             text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
             display: flex;
             flex-direction: column;
             align-items: center;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .app-card::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            border-radius: 16px;
-            padding: 1.5px;
-            background: linear-gradient(to bottom bottom, transparent, transparent);
-            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-            -webkit-mask-composite: xor;
-            mask-composite: exclude;
-            transition: background 0.4s;
+            cursor: pointer;
         }
 
         .app-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 15px 35px rgba(0, 212, 255, 0.15);
-        }
-
-        .app-card:hover::before {
-            background: var(--gradient);
+            transform: translateY(-5px);
+            border-color: var(--neon-purple);
+            box-shadow: 0 10px 30px rgba(157, 77, 221, 0.15);
         }
 
         .app-icon-wrapper {
-            background: rgba(0, 0, 0, 0.3);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            padding: 15px;
-            border-radius: 20px;
-            margin-bottom: 20px;
-            display: inline-flex;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+            width: 90px;
+            height: 90px;
+            background: linear-gradient(135deg, rgba(0, 210, 255, 0.1), rgba(157, 77, 221, 0.1));
+            border-radius: 22px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .app-icon-wrapper img {
+            width: 60px;
+            height: 60px;
+            object-fit: contain;
         }
 
         .app-card h3 {
-            font-size: 1.4rem;
-            margin-bottom: 5px;
+            font-size: 1.6rem;
+            margin-bottom: 0.5rem;
         }
 
         .app-subtitle {
-            font-size: 0.9rem;
-            color: var(--text-muted);
-            margin-bottom: 15px;
+            color: var(--neon-blue);
+            font-size: 0.95rem;
+            margin-bottom: 1rem;
+            font-weight: 500;
         }
 
         .app-description {
+            color: var(--text-muted);
             font-size: 0.95rem;
-            color: #cbd5e1;
-            line-height: 1.5;
-            margin-bottom: 25px;
+            line-height: 1.6;
+            margin-bottom: 2rem;
             flex-grow: 1;
         }
 
-        .btn-action {
+        .download-btn {
+            display: inline-block;
             width: 100%;
-            background: var(--gradient);
+            padding: 0.8rem 0;
+            background: linear-gradient(90deg, #0072ff, #00c6ff);
             color: white;
             border: none;
-            padding: 12px 20px;
             border-radius: 8px;
             font-weight: 600;
-            cursor: pointer;
+            font-size: 1rem;
             text-decoration: none;
-            display: inline-block;
-            transition: opacity 0.3s, transform 0.2s;
-            box-shadow: 0 4px 15px rgba(179, 0, 255, 0.3);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            box-shadow: 0 4px 15px rgba(0, 114, 255, 0.3);
         }
 
-        .btn-action:hover {
-            opacity: 0.9;
+        .download-btn:hover {
             transform: scale(1.02);
+            box-shadow: 0 6px 20px rgba(0, 210, 255, 0.5);
         }
 
-        /* Split Info Sections (About & Contacts) */
-        .info-split-block {
+        /* About & Layout Features mimicking image structures */
+        .split-layout {
             display: grid;
-            grid-template-columns: 1.1fr 1fr;
-            gap: 40px;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
             align-items: center;
+            background: rgba(11, 17, 32, 0.4);
+            padding: 3rem;
+            border-radius: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.02);
         }
 
-        .split-image-container {
+        .image-placeholder {
+            width: 100%;
             border-radius: 16px;
             overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            border: 1px solid rgba(255,255,255,0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
-        .split-image-container img {
+        .image-placeholder img {
             width: 100%;
             height: auto;
             display: block;
-            filter: grayscale(20%);
+            mix-blend-mode: luminosity;
+            opacity: 0.8;
         }
 
-        .info-text-content p {
-            color: #cbd5e1;
-            font-size: 1.1rem;
-            line-height: 1.7;
+        .about-text {
+            font-size: 1.15rem;
+            line-height: 1.8;
+            color: var(--text-muted);
         }
 
-        /* Standard Contact Form Elements */
-        .contact-form-wrapper {
-            background: #080d1d;
-            border: 1px solid var(--border-color);
-            padding: 30px;
-            border-radius: 16px;
+        /* Contact Us Form styles */
+        .contact-container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: var(--card-bg);
+            padding: 3rem;
+            border-radius: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.3);
         }
 
         .form-group {
-            margin-bottom: 20px;
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text-main);
+            font-weight: 500;
         }
 
         .form-group input, .form-group textarea {
             width: 100%;
-            background: #040814;
-            border: 1px solid #1e293b;
-            padding: 14px;
+            padding: 1rem;
+            background-color: rgba(3, 7, 18, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 8px;
             color: white;
             font-size: 1rem;
-            transition: all 0.3s;
+            transition: border-color 0.3s ease;
         }
 
         .form-group input:focus, .form-group textarea:focus {
             outline: none;
             border-color: var(--neon-blue);
-            box-shadow: 0 0 10px rgba(0, 210, 255, 0.2);
         }
 
-        /* Footer configuration */
-        .site-footer {
-            border-top: 1px solid rgba(179, 0, 255, 0.2);
-            padding: 30px 0;
+        .submit-btn {
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(90deg, var(--neon-blue), var(--neon-purple));
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: opacity 0.3s ease, transform 0.2s ease;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(157, 77, 221, 0.4);
+        }
+
+        /* Footer */
+        footer {
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 2rem 0;
             text-align: center;
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            align-items: center;
+            margin-top: auto;
+            background-color: rgba(3, 7, 18, 0.8);
         }
 
         .footer-links {
             display: flex;
-            gap: 20px;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-bottom: 1rem;
         }
 
         .footer-links a {
             color: var(--text-muted);
             text-decoration: none;
-            font-size: 0.95rem;
-        }
-
-        .footer-copyright {
-            color: #475569;
             font-size: 0.9rem;
         }
 
-        /* --- MOBILE PREVIEW WINDOW STYLES --- */
-        .mobile-preview {
-            width: 30%;
-            max-width: 380px;
-            align-self: flex-start;
-            background: #040714;
-            border: 4px solid #10172a;
-            border-radius: 36px;
-            padding: 20px 15px;
-            box-shadow: 0 25px 60px rgba(0,0,0,0.8), 0 0 40px rgba(179, 0, 255, 0.1);
-            position: relative;
+        .footer-links a:hover {
+            color: var(--neon-blue);
         }
 
-        .mobile-header {
-            background: var(--card-bg);
-            border-radius: 12px;
-            padding: 10px 15px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-            border: 1px solid var(--border-color);
+        footer p {
+            color: #4b5563;
+            font-size: 0.85rem;
         }
 
-        .mobile-menu-btn {
-            background: transparent;
-            border: none;
-            color: white;
-            cursor: pointer;
-            font-size: 1.4rem;
-        }
-
-        .mobile-nav-dropdown {
-            background: #090e20;
-            border: 1px solid var(--border-color);
-            border-radius: 10px;
-            margin-top: -15px;
-            margin-bottom: 20px;
-            padding: 10px;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        .mobile-nav-dropdown a {
-            color: white;
-            text-decoration: none;
-            padding: 8px 12px;
-            border-radius: 6px;
-            font-size: 0.95rem;
-        }
-
-        .mobile-nav-dropdown a:hover {
-            background: rgba(255,255,255,0.05);
-        }
-
-        .mobile-section {
-            background: #060b1a;
-            border-radius: 16px;
-            padding: 20px;
-            margin-bottom: 25px;
-            border: 1px solid rgba(255,255,255,0.02);
-        }
-
-        /* SVG Logos / Icons generated uniformly via vector markup */
-        .vector-logo {
-            display: block;
-        }
-
-        /* Keyframe Animations */
+        /* Animations */
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(15px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); filter: drop-shadow(0 0 25px rgba(0, 210, 255, 0.5)); }
-            50% { transform: scale(1.03); filter: drop-shadow(0 0 35px rgba(179, 0, 255, 0.7)); }
-        }
-
-        /* Responsive Breakpoint for Natural Scaling */
-        @media(max-width: 992px) {
-            .workspace-container { flex-direction: column; align-items: center; }
-            .main-site, .mobile-preview { width: 100%; max-width: 700px; }
-            .info-split-block { grid-template-columns: 1fr; }
+        /* Responsive Breakpoints */
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                gap: 1.5rem;
+            }
+            .split-layout {
+                grid-template-columns: 1fr;
+                padding: 1.5rem;
+            }
         }
     </style>
 </head>
 <body>
 
-    <!-- Demo Toggle Bar to Inspect Layout Configurations -->
-    <div class="view-toggle">
-        <button class="active" onclick="changeView('split', this)">Split View</button>
-        <button onclick="changeView('desktop', this)">Desktop View</button>
-        <button onclick="changeView('mobile', this)">Mobile Frame</button>
-    </div>
+    <!-- Header Section -->
+    <header>
+        <div class="logo-container">
+            <!-- Replace 'path-to-your-logo.png' with your actual image path -->
+            <img class="logo-img" src="logo.png" alt="KarolAppStudio Logo">
+            <div class="brand-name">KarolAppStudio</div>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="#" class="nav-link active" onclick="switchPage('apps-page', this)">Apps</a></li>
+                <li><a href="#" class="nav-link" onclick="switchPage('about-page', this)">About Us</a></li>
+                <li><a href="#" class="nav-link" onclick="switchPage('contact-page', this)">Contact Us</a></li>
+            </ul>
+        </nav>
+    </header>
 
-    <!-- Core Layout Wrap -->
-    <div class="workspace-container" id="workspace">
+    <!-- Main Content Area -->
+    <main>
         
-        <!-- ================= DESKTOP SITE SYSTEM ================= -->
-        <main class="main-site">
-            
-            <!-- Large Scale Header Brand Element -->
-            <div class="brand-showcase">
-                <svg class="brand-logo-large" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <circle cx="100" cy="100" r="85" stroke="url(#neonGlow)" stroke-width="2" stroke-dasharray="5 5" opacity="0.3"/>
-                    <path d="M50 50 V150 M50 100 L110 50 M80 115 L125 150" stroke="#00d2ff" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/>
-                    <path d="M125 80 L145 100 L125 120" stroke="#b300ff" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
-                    <path d="M105 115 L95 135" stroke="#b300ff" stroke-width="8" stroke-linecap="round"/>
-                    <path d="M85 80 L65 100 L85 120" stroke="#b300ff" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
-                    <defs>
-                        <linearGradient id="neonGlow" x1="0" y1="0" x2="200" y2="200" gradientUnits="userSpaceOnUse">
-                            <stop offset="0%" stop-color="#00d2ff"/>
-                            <stop offset="100%" stop-color="#b300ff"/>
-                        </linearGradient>
-                    </defs>
-                </svg>
-                <h1 class="brand-title-large">KarolAppStudio</h1>
-            </div>
-
-            <!-- Global Site Navigation -->
-            <nav class="navbar">
-                <div class="nav-logo-area">
-                    <svg class="nav-logo" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M50 50 V150 M50 100 L110 50 M80 115 L125 150" stroke="#00d2ff" stroke-width="16" stroke-linecap="round"/>
-                        <path d="M125 80 L145 100 L125 120 M105 115 L95 135 M85 80 L65 100 L85 120" stroke="#b300ff" stroke-width="12" stroke-linecap="round"/>
-                    </svg>
-                </div>
-                <div class="nav-links">
-                    <a href="#apps">Apps</a>
-                    <a href="#about">About Us</a>
-                    <a href="#contact">Contact Us</a>
-                </div>
-            </nav>
-
-            <!-- Main Dynamic Container Panel -->
-            <div class="content-frame">
+        <!-- APPS PAGE -->
+        <section id="apps-page" class="page active-page">
+            <h2>Apps</h2>
+            <div class="apps-grid">
                 
-                <!-- Apps Listing Area -->
-                <section id="apps">
-                    <h2 class="section-title">Apps</h2>
-                    <div class="apps-grid">
-                        
-                        <!-- Requested Target App Unit -->
-                        <div class="app-card">
-                            <div class="app-icon-wrapper">
-                                <svg width="50" height="50" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <rect width="200" height="200" rx="40" fill="#090e20"/>
-                                    <path d="M40 70 C 70 80, 90 80, 100 90 C 110 80, 130 80, 160 70 V 160 C 130 165, 110 165, 100 155 C 90 165, 70 165, 40 160 Z" fill="none" stroke="#b300ff" stroke-width="8"/>
-                                    <path d="M100 90 V 155" stroke="#b300ff" stroke-width="8"/>
-                                    <path d="M65 100 L100 120 L135 100" stroke="#00d2ff" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
-                                </svg>
-                            </div>
-                            <h3>ReadingsApp</h3>
-                            <div class="app-subtitle">For Mobile & Web</div>
-                            <p class="app-description">
-                                A simple app for following daily Bible readings based on the Christadelphian Bible Reading Companion by Robert Roberts, with support for multiple Indian language Bibles.
-                            </p>
-                        </div>
-                <a href="https://github.com/KarolAppStudio/ReadingsApp/releases/download/ReadingsApp/DailyReadingCompanion.v1.0.apk" target="_blank" class="btn app-link">Download App</a>
-            </div>
-
-                        <!-- Duplicate Mirror Showcase App 2 -->
-                        <div class="app-card">
-                            <div class="app-icon-wrapper">
-                                <svg width="50" height="50" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <rect width="200" height="200" rx="40" fill="#090e20"/>
-                                    <path d="M60 60 H 140 V 140 H 60 Z" stroke="#00d2ff" stroke-width="10"/>
-                                    <path d="M80 90 H 120 M80 110 H 110" stroke="#b300ff" stroke-width="8" stroke-linecap="round"/>
-                                </svg>
-                            </div>
-                            <h3>UtilityPack</h3>
-                            <div class="app-subtitle">Handheld Toolkit</div>
-                            <p class="app-description">
-                                A highly curated ecosystem of clean, local first utility workflows designed to eliminate native mobile friction patterns effortlessly.
-                            </p>
-                            <button class="btn-action" style="background: #1e293b; border: 1px solid var(--border-color)">Coming Soon</button>
-                        </div>
-
-                        <!-- Duplicate Mirror Showcase App 3 -->
-                        <div class="app-card">
-                            <div class="app-icon-wrapper">
-                                <svg width="50" height="50" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <rect width="200" height="200" rx="40" fill="#090e20"/>
-                                    <circle cx="100" cy="100" r="40" stroke="#b300ff" stroke-width="10"/>
-                                    <path d="M100 40 V 60 M100 140 V 160 M40 100 H 60 M140 100 H 160" stroke="#00d2ff" stroke-width="8" stroke-linecap="round"/>
-                                </svg>
-                            </div>
-                            <h3>FocusSpace</h3>
-                            <div class="app-subtitle">Productivity Engine</div>
-                            <p class="app-description">
-                                Minimalist ambient tracker engineered to optimize contextual execution routines and manage daily fatigue rates on portable electronics.
-                            </p>
-                            <button class="btn-action" style="background: #1e293b; border: 1px solid var(--border-color)">Coming Soon</button>
-                        </div>
-
+                <!-- App Item 1 (Target App) -->
+                <div class="app-card" onclick="window.location.href='https://github.com/KarolAppStudio/ReadingsApp/releases/download/ReadingsApp/DailyReadingCompanion.v1.0.apk'">
+                    <div class="app-icon-wrapper">
+                        <!-- Reuses logo inside card as seen in design references -->
+                        <img src="path-to-your-logo.png" alt="ReadingsApp">
                     </div>
-                </section>
-
-                <!-- About Section Layout -->
-                <section id="about" class="info-split-block">
-                    <div class="split-image-container">
-                        <!-- Simulated modern vector/placeholder team component match -->
-                        <svg viewBox="0 0 600 350" fill="#0c122c">
-                            <rect width="600" height="350" fill="#060b19"/>
-                            <defs>
-                                <linearGradient id="avatarGrad" x1="0" y1="0" x2="0" y2="1">
-                                    <stop offset="0%" stop-color="#00d2ff" stop-opacity="0.2"/>
-                                    <stop offset="100%" stop-color="#b300ff" stop-opacity="0.05"/>
-                                </linearGradient>
-                            </defs>
-                            <rect x="50" y="50" width="500" height="250" rx="15" fill="url(#avatarGrad)" stroke="#1e293b"/>
-                            <!-- Abstract Graphic representations of tech group items matching image layout structure -->
-                            <circle cx="200" cy="160" r="45" fill="#111827" stroke="#00d2ff" stroke-width="2"/>
-                            <circle cx="300" cy="150" r="55" fill="#1f2937" stroke="#b300ff" stroke-width="2"/>
-                            <circle cx="400" cy="160" r="45" fill="#111827" stroke="#00d2ff" stroke-width="2"/>
-                            <path d="M150 250 C 150 200, 250 200, 250 250 Z" fill="#1e293b"/>
-                            <path d="M230 250 C 230 190, 370 190, 370 250 Z" fill="#374151"/>
-                            <path d="M350 250 C 350 200, 450 200, 450 250 Z" fill="#1e293b"/>
-                            <text x="300" y="290" fill="#475569" font-size="14" text-anchor="middle">[ Dedicated Developer Space ]</text>
-                        </svg>
-                    </div>
-                    <div class="info-text-content">
-                        <h2 class="section-title">About Us</h2>
-                        <p>I'm a Tech enthusiast passionate about building practical utilities for Handheld devices that make everyday life simpler and more efficient.</p>
-                    </div>
-                </section>
-
-                <!-- Contact Form Section Setup -->
-                <section id="contact">
-                    <h2 class="section-title">Contact Us</h2>
-                    <div class="contact-form-wrapper">
-                        <form onsubmit="event.preventDefault(); alert('Message transmission simulated successfully!');">
-                            <div class="form-group">
-                                <input type="text" placeholder="Name" required>
-                            </div>
-                            <div class="form-group">
-                                <input type="email" placeholder="Email" required>
-                            </div>
-                            <div class="form-group">
-                                <textarea rows="5" placeholder="Message" required></textarea>
-                            </div>
-                            <button type="submit" class="btn-action">Submit Details</button>
-                        </form>
-                    </div>
-                </section>
-
-            </div>
-
-            <!-- Main Desktop Site Footer Layout -->
-            <footer class="site-footer">
-                <div class="footer-links">
-                    <a href="#apps">Apps</a>
-                    <a href="#about">About Us</a>
-                    <a href="#contact">Contact Us</a>
+                    <h3>ReadingsApp</h3>
+                    <div class="app-subtitle">Mobile and web</div>
+                    <p class="app-description">
+                        A simple app for following daily Bible readings based on the Christadelphian Bible Reading Companion by Robert Roberts, with support for multiple Indian language Bibles.
+                    </p>
+                    <a href="https://github.com/KarolAppStudio/ReadingsApp/releases/download/ReadingsApp/DailyReadingCompanion.v1.0.apk" class="download-btn" onclick="event.stopPropagation();">Download App</a>
                 </div>
-                <div class="footer-copyright">
-                    Copyright © KarolAppStudio
+
+                <!-- Duplicate placeholder items to fulfill layout format -->
+                <div class="app-card">
+                    <div class="app-icon-wrapper">
+                        <img src="path-to-your-logo.png" alt="App Icon">
+                    </div>
+                    <h3>ReadingsApp</h3>
+                    <div class="app-subtitle">Mobile and web</div>
+                    <p class="app-description">
+                        A simple app for following daily Bible readings based on the Christadelphian Bible Reading Companion by Robert Roberts, with support for multiple Indian language Bibles.
+                    </p>
+                    <a href="#" class="download-btn" onclick="event.stopPropagation();">Download App</a>
                 </div>
-            </footer>
 
-        </main>
+                <div class="app-card">
+                    <div class="app-icon-wrapper">
+                        <img src="path-to-your-logo.png" alt="App Icon">
+                    </div>
+                    <h3>ReadingsApp</h3>
+                    <div class="app-subtitle">Mobile and web</div>
+                    <p class="app-description">
+                        A simple app for following daily Bible readings based on the Christadelphian Bible Reading Companion by Robert Roberts, with support for multiple Indian language Bibles.
+                    </p>
+                    <a href="#" class="download-btn" onclick="event.stopPropagation();">Download App</a>
+                </div>
 
-
-        <!-- ================= MOBILE DEVICE PREVIEW ================= -->
-        <aside class="mobile-preview">
-            
-            <div class="mobile-header">
-                <svg width="32" height="32" viewBox="0 0 200 200" fill="none">
-                    <path d="M50 50 V150 M50 100 L110 50 M80 115 L125 150" stroke="#00d2ff" stroke-width="20" stroke-linecap="round"/>
-                    <path d="M125 80 L145 100 L125 120" stroke="#b300ff" stroke-width="16" stroke-linecap="round"/>
-                </svg>
-                <button class="mobile-menu-btn" onclick="toggleMobileMenu()">≡</button>
             </div>
+        </section>
 
-            <div class="mobile-nav-dropdown" id="mobileMenu">
-                <a href="#apps" onclick="toggleMobileMenu()">Apps Dropdown ▾</a>
-                <a href="#about" onclick="toggleMobileMenu()">About Us</a>
-                <a href="#contact" onclick="toggleMobileMenu()">Contact Us</a>
-            </div>
-
-            <div class="mobile-section">
-                <h3 style="margin-bottom: 15px; color: var(--neon-blue);">About Us</h3>
-                <p style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.6;">
+        <!-- ABOUT US PAGE -->
+        <section id="about-page" class="page">
+            <h2>About Us</h2>
+            <div class="split-layout">
+                <div class="image-placeholder">
+                    <!-- Standard placeholder image matching the structure of team layouts -->
+                    <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=600&q=80" alt="Team">
+                </div>
+                <div class="about-text">
                     I'm a Tech enthusiast passionate about building practical utilities for Handheld devices that make everyday life simpler and more efficient.
-                </p>
-            </div>
-
-            <div class="mobile-section">
-                <h3 style="margin-bottom: 15px; color: var(--neon-purple);">Contact Us</h3>
-                <div class="form-group"><input type="text" placeholder="Name" style="padding:8px; font-size:0.85rem;"></div>
-                <div class="form-group"><input type="email" placeholder="Email" style="padding:8px; font-size:0.85rem;"></div>
-                <div class="form-group"><textarea placeholder="Message" rows="3" style="padding:8px; font-size:0.85rem;"></textarea></div>
-                <button class="btn-action" style="padding: 8px; font-size:0.85rem;">Submit</button>
-            </div>
-
-            <footer class="site-footer" style="border: none; padding-top: 10px;">
-                <div class="footer-copyright" style="font-size: 0.75rem;">
-                    Copyright © KarolAppStudio
                 </div>
-            </footer>
+            </div>
+        </section>
 
-        </aside>
+        <!-- CONTACT US PAGE -->
+        <section id="contact-page" class="page">
+            <h2>Contact Us</h2>
+            <div class="contact-container">
+                <form onsubmit="event.preventDefault(); alert('Message sent successfully!');">
+                    <div class="form-group">
+                        <label for="name">Name</label>
+                        <input type="text" id="name" placeholder="Your name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" placeholder="Your email addresses" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="message">Message</label>
+                        <textarea id="message" rows="5" placeholder="Your message here..." required></textarea>
+                    </div>
+                    <button type="submit" class="submit-btn">Submit :))</button>
+                </form>
+            </div>
+        </section>
 
-    </div>
+    </main>
 
-    <!-- Layout Controls Script -->
+    <!-- Footer Area -->
+    <footer>
+        <div class="footer-links">
+            <a href="#" onclick="switchPage('apps-page'); return false;">Apps</a>
+            <a href="#" onclick="switchPage('about-page'); return false;">About Us</a>
+            <a href="#" onclick="switchPage('contact-page'); return false;">Contact Us</a>
+        </div>
+        <p>Copyright © KarolAppStudio</p>
+    </footer>
+
+    <!-- Tab Page Management Script -->
     <script>
-        function changeView(mode, btn) {
-            const container = document.getElementById('workspace');
-            const buttons = document.querySelectorAll('.view-toggle button');
+        function switchPage(pageId, element) {
+            // Hide all pages
+            const pages = document.querySelectorAll('.page');
+            pages.forEach(page => page.classList.remove('active-page'));
             
-            buttons.forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
+            // Show selected page
+            document.getElementById(pageId).classList.add('active-page');
             
-            container.classList.remove('desktop-only', 'mobile-only');
-            
-            if (mode === 'desktop') {
-                container.classList.add('desktop-only');
-            } else if (mode === 'mobile') {
-                container.classList.add('mobile-only');
+            // Manage Active Nav Link styling if clicked via Header Nav
+            if(element) {
+                const links = document.querySelectorAll('.nav-link');
+                links.forEach(link => link.classList.remove('active'));
+                element.classList.add('active');
+            } else {
+                // If clicked from footer links, manually sync header highlights
+                const links = document.querySelectorAll('.nav-link');
+                links.forEach(link => {
+                    link.classList.remove('active');
+                    if(link.getAttribute('onclick').includes(pageId)) {
+                        link.classList.add('active');
+                    }
+                });
             }
+            // Scroll back smoothly to top
+            window.scrollTo({top: 0, behavior: 'smooth'});
         }
-
-        function toggleMobileMenu() {
-            const menu = document.getElementById('mobileMenu');
-            menu.style.display = (menu.style.display === 'none' || menu.style.display === '') ? 'flex' : 'none';
-        }
-        
-        // Initialize hidden menu state on mobile component simulation
-        document.getElementById('mobileMenu').style.display = 'none';
     </script>
 </body>
 </html>

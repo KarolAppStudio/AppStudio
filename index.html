@@ -3,256 +3,432 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KarolAppStudio | Home of Purposeful Apps</title>
+    <title>KarolAppStudio | Premium App Development</title>
     <style>
-        :root {
-            --bg-color: #f8fafc;
-            --text-color: #1e293b;
-            --primary: #4f46e5;
-            --primary-hover: #4338ca;
-            --card-bg: #ffffff;
-            --border: #e2e8f0;
-            --muted: #64748b;
-        }
-
+        /* --- Design System & Reset --- */
         * {
-            box-sizing: border-box;
             margin: 0;
             padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            scroll-behavior: smooth;
+        }
+
+        :root {
+            --bg-color: #0b0c10;
+            --card-bg: #1f2833;
+            --text-primary: #ffffff;
+            --text-secondary: #c5c6c7;
+            --accent-blue: #00a8ff;
+            --accent-purple: #9b51e0;
+            --gradient-primary: linear-gradient(135deg, #00a8ff 0%, #9b51e0 100%);
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             background-color: var(--bg-color);
-            color: var(--text-color);
+            color: var(--text-primary);
+            overflow-x: hidden;
             line-height: 1.6;
         }
 
+        /* --- Header / Navigation --- */
         header {
-            background-color: rgba(255, 255, 255, 0.8);
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid var(--border);
-            position: sticky;
+            position: fixed;
             top: 0;
-            z-index: 100;
-        }
-
-        .nav-container {
-            max-width: 1100px;
-            margin: 0 auto;
-            padding: 1rem 2rem;
+            left: 0;
+            width: 100%;
+            padding: 1rem 5%;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            background: rgba(11, 12, 16, 0.85);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
         }
 
-        .logo {
-            font-size: 1.3rem;
-            font-weight: 700;
-            color: var(--primary);
+        .logo-container {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo-img {
+            height: 50px; /* Adjust height based on your preference */
+            width: auto;
+            object-fit: contain;
+            transition: transform 0.3s ease;
+        }
+
+        .logo-img:hover {
+            transform: scale(1.05);
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        nav a {
+            color: var(--text-secondary);
             text-decoration: none;
-            letter-spacing: -0.5px;
+            font-weight: 500;
+            transition: color 0.3s ease;
+            position: relative;
         }
 
-        .hero {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 5rem 2rem 3rem 2rem;
-            text-align: center;
+        nav a:hover, nav a.active {
+            color: var(--accent-blue);
         }
 
-        .hero h1 {
-            font-size: 3rem;
-            font-weight: 800;
-            line-height: 1.2;
-            margin-bottom: 1.5rem;
-            background: linear-gradient(to right, #4f46e5, #06b6d4);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+        nav a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            left: 0;
+            background: var(--gradient-primary);
+            transition: width 0.3s ease;
         }
 
-        .hero p {
-            font-size: 1.25rem;
-            color: var(--muted);
-            max-width: 600px;
-            margin: 0 auto;
+        nav a:hover::after {
+            width: 100%;
         }
 
-        .main-content {
-            max-width: 1100px;
-            margin: 0 auto;
-            padding: 2rem;
+        /* --- Global Sections & Animations --- */
+        section {
+            padding: 8rem 10% 4rem 10%;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            opacity: 0;
+            transform: translateY(40px);
+            animation: fadeInUp 1s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .section-title {
-            font-size: 1.5rem;
-            font-weight: 700;
+            font-size: 2.5rem;
             margin-bottom: 2rem;
-            border-bottom: 2px solid var(--border);
-            padding-bottom: 0.5rem;
+            text-align: center;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            position: relative;
         }
 
-        .apps-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-            gap: 2rem;
-            margin-bottom: 5rem;
-        }
-
-        .app-card {
-            background-color: var(--card-bg);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 2rem;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-        }
-
-        .app-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 12px 20px -8px rgba(0, 0, 0, 0.08);
-        }
-
-        .app-badge {
-            display: inline-block;
-            align-self: flex-start;
-            background-color: #e0e7ff;
-            color: var(--primary);
-            font-size: 0.75rem;
-            font-weight: 600;
-            padding: 0.25rem 0.75rem;
-            border-radius: 9999px;
-            margin-bottom: 1rem;
-        }
-
-        .app-card h3 {
-            font-size: 1.35rem;
-            margin-bottom: 0.75rem;
-        }
-
-        .app-card p {
-            color: var(--muted);
-            font-size: 0.95rem;
-            margin-bottom: 1.5rem;
-            flex-grow: 1;
-        }
-
-        .features-list {
-            list-style: none;
-            margin-bottom: 1.5rem;
-            font-size: 0.9rem;
-        }
-
-        .features-list li {
-            margin-bottom: 0.4rem;
-            display: flex;
+        /* --- Hero Section --- */
+        #home {
+            text-align: center;
             align-items: center;
+            justify-content: center;
+            background: radial-gradient(circle at 50% 50%, rgba(155, 81, 224, 0.1) 0%, transparent 60%);
         }
 
-        .features-list li::before {
-            content: "✓";
-            color: #10b981;
-            font-weight: bold;
-            margin-right: 0.5rem;
+        .hero-tagline {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            letter-spacing: -1px;
+        }
+
+        .hero-sub {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin-bottom: 2.5rem;
         }
 
         .btn {
             display: inline-block;
-            text-align: center;
-            background-color: var(--primary);
-            color: white;
-            padding: 0.75rem 1.5rem;
-            border-radius: 8px;
+            padding: 0.8rem 2rem;
+            border-radius: 30px;
             text-decoration: none;
             font-weight: 600;
-            transition: background-color 0.15s ease;
+            color: white;
+            background: var(--gradient-primary);
+            background-size: 200% auto;
+            transition: 0.5s;
+            box-shadow: 0 4px 15px rgba(0, 168, 255, 0.3);
         }
 
         .btn:hover {
-            background-color: var(--primary-hover);
+            background-position: right center;
+            box-shadow: 0 4px 25px rgba(155, 81, 224, 0.5);
+            transform: translateY(-2px);
         }
 
-        .placeholder-card {
-            border: 2px dashed var(--border);
-            background: transparent;
-            justify-content: center;
-            align-items: center;
-            color: var(--muted);
-            text-align: center;
+        /* --- Apps Grid Section --- */
+        .apps-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2.5rem;
+            margin-top: 2rem;
         }
 
-        .placeholder-card:hover {
-            transform: none;
-            box-shadow: none;
+        .app-card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 2.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+            overflow: hidden;
         }
 
-        footer {
-            background-color: #1e293b;
-            color: #f8fafc;
-            padding: 3rem 2rem;
-            text-align: center;
+        .app-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--gradient-primary);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            z-index: 0;
+        }
+
+        .app-card:hover {
+            transform: translateY(-10px);
+            border-color: rgba(0, 168, 255, 0.4);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .app-card-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .app-icon {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .app-title {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .app-description {
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+            font-size: 0.95rem;
+        }
+
+        .app-link {
+            position: relative;
+            z-index: 1;
+            align-self: flex-start;
             margin-top: auto;
         }
 
-        footer p {
-            font-size: 0.9rem;
-            color: #94a3b8;
+        /* --- About Us Section --- */
+        .about-content {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
         }
 
-        @media (max-width: 640px) {
-            .hero h1 { font-size: 2.2rem; }
-            .apps-grid { grid-template-columns: 1fr; }
+        .about-text {
+            font-size: 1.15rem;
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+        }
+
+        /* --- Contact Us Section --- */
+        .contact-container {
+            max-width: 600px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 1rem;
+            background: var(--card-bg);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            color: white;
+            outline: none;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-control:focus {
+            border-color: var(--accent-blue);
+        }
+
+        textarea.form-control {
+            resize: vertical;
+            min-height: 150px;
+        }
+
+        .submit-btn {
+            width: 100%;
+            border: none;
+            cursor: pointer;
+            padding: 1rem;
+            font-size: 1rem;
+        }
+
+        /* --- Footer --- */
+        footer {
+            text-align: center;
+            padding: 2rem;
+            color: rgba(255, 255, 255, 0.4);
+            font-size: 0.85rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        /* Delay triggers for sequential scroll animation feel */
+        #apps { animation-delay: 0.2s; }
+        #about { animation-delay: 0.4s; }
+        #contact { animation-delay: 0.6s; }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            nav ul { display: none; } /* Simplified for code structure brevity */
+            .hero-tagline { font-size: 2.5rem; }
+            section { padding: 6rem 5% 2rem 5%; }
         }
     </style>
 </head>
 <body>
 
+    <!-- Header & Logo Placement -->
     <header>
-        <div class="nav-container">
-            <a href="#" class="logo">KarolAppStudio</a>
+        <div class="logo-container">
+            <!-- Reference to your attached Logo -->
+            <img src="Logo.png" alt="KarolAppStudio Logo" class="logo-img">
         </div>
+        <nav>
+            <ul>
+                <li><a href="#home" class="active">Home</a></li>
+                <li><a href="#apps">Our Apps</a></li>
+                <li><a href="#about">About Us</a></li>
+                <li><a href="#contact">Contact Us</a></li>
+            </ul>
+        </nav>
     </header>
 
-    <section class="hero">
-        <h1>Welcome to KarolAppStudio</h1>
-        <p>Creating simple, functional, and accessible applications designed to build good habits and help you grow every day.</p>
+    <!-- Hero / Introduction Section -->
+    <section id="home">
+        <h1 class="hero-tagline">Crafting Immersive Digital Experiences</h1>
+        <p class="hero-sub">Welcome to KarolAppStudio. We build beautiful, high-performance applications designed to simplify and elevate your daily digital interactions.</p>
+        <a href="#apps" class="btn">Explore Our Apps</a>
     </section>
 
-    <main class="main-content">
+    <!-- Apps Showcase Section -->
+    <section id="apps">
         <h2 class="section-title">Our Applications</h2>
-        
-        <div class="apps-grid">
-            <!-- Active App Card -->
+        <div class="apps-container">
+            
+            <!-- ReadingsApp Card -->
             <div class="app-card">
-                <div>
-                    <span class="app-badge">Habit & Study</span>
-                    <h3>ReadingsApp</h3>
-                    <p>A simple web application for following daily Bible readings based on the Christadelphian Bible Reading Companion by Robert Roberts.</p>
-                    <ul class="features-list">
-                        <li>Three systematic daily reading portions</li>
-                        <li>Support for multiple Indian language Bibles</li>
-                        <li>Clean, distraction-free interface</li>
-                    </ul>
+                <div class="app-card-content">
+                    <div class="app-icon">📚</div>
+                    <h3 class="app-title">ReadingsApp</h3>
+                    <p class="app-description">An intuitive, clutter-free reading application engineered to streamline your articles, documents, and books into a single elegant workspace.</p>
                 </div>
-                <a href="https://karolappstudio.github.io/ReadingsApp/" class="btn" target="_blank" rel="noopener">Open Application</a>
+                <a href="https://karolappstudio.github.io/ReadingsApp/" target="_blank" class="btn app-link">Launch App</a>
             </div>
 
-            <!-- Future Project Placeholder Card -->
-            <div class="app-card placeholder-card">
-                <div>
-                    <p style="font-size: 1.5rem; margin-bottom: 0.5rem;">🚀</p>
-                    <h3>New App Coming Soon</h3>
-                    <p>We are always working on building more toolsets and structured apps.</p>
+            <!-- Future App Placeholder to maintain grid aesthetics -->
+            <div class="app-card">
+                <div class="app-card-content">
+                    <div class="app-icon">⚡</div>
+                    <h3 class="app-title">Coming Soon</h3>
+                    <p class="app-description">We're cooking up something powerful. Stay tuned for our next innovative software release designed to push technical boundaries.</p>
                 </div>
+                <a href="#contact" class="btn app-link" style="background: #333; box-shadow: none;">Get Updates</a>
             </div>
+
         </div>
-    </main>
+    </section>
+
+    <!-- About Us Section -->
+    <section id="about">
+        <h2 class="section-title">About KarolAppStudio</h2>
+        <div class="about-content">
+            <p class="about-text">
+                At KarolAppStudio, technology meets modern design. We are dedicated to creating sleek, intuitive application interfaces combined with solid architectural engineering.
+            </p>
+            <p class="about-text">
+                Our philosophy prioritizes the end-user experience above all else—ensuring every product we deploy is lightning-fast, visually polished, and highly reliable.
+            </p>
+        </div>
+    </section>
+
+    <!-- Contact Us Section -->
+    <section id="contact">
+        <h2 class="section-title">Connect With Us</h2>
+        <div class="contact-container">
+            <form action="#" method="POST" onsubmit="event.preventDefault(); alert('Message sent successfully!');">
+                <div class="form-group">
+                    <label for="name">Name</label>
+                    <input type="text" id="name" class="form-control" placeholder="Your Name" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" class="form-control" placeholder="name@example.com" required>
+                </div>
+                <div class="form-group">
+                    <label for="message">Message</label>
+                    <textarea id="message" class="form-control" placeholder="Tell us how we can collaborate..." required></textarea>
+                </div>
+                <button type="submit" class="btn submit-btn">Send Message</button>
+            </form>
+        </div>
+    </section>
 
     <footer>
-        <p>&copy; 2026 KarolAppStudio. Made with ❤️ to encourage consistent routines.</p>
+        <p>&copy; 2026 KarolAppStudio. All rights reserved.</p>
     </footer>
 
+    <!-- Simple Active Link Logic Script -->
+    <script>
+        const sections = document.querySelectorAll('section');
+        const navLinks = document.querySelectorAll('nav a');
+
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if (pageYOffset >= (sectionTop - sectionHeight / 3)) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href').slice(1) === current) {
+                    link.classList.add('active');
+                }
+            });
+        });
+    </script>
 </body>
 </html>

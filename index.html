@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KarolAppStudio | Home of Purposeful Apps</title>
+    <style>
+        :root {
+            --bg-color: #f8fafc;
+            --text-color: #1e293b;
+            --primary: #4f46e5;
+            --primary-hover: #4338ca;
+            --card-bg: #ffffff;
+            --border: #e2e8f0;
+            --muted: #64748b;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        header {
+            background-color: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--primary);
+            text-decoration: none;
+            letter-spacing: -0.5px;
+        }
+
+        .hero {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 5rem 2rem 3rem 2rem;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            line-height: 1.2;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(to right, #4f46e5, #06b6d4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            color: var(--muted);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .main-content {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+            border-bottom: 2px solid var(--border);
+            padding-bottom: 0.5rem;
+        }
+
+        .apps-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 2rem;
+            margin-bottom: 5rem;
+        }
+
+        .app-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .app-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 20px -8px rgba(0, 0, 0, 0.08);
+        }
+
+        .app-badge {
+            display: inline-block;
+            align-self: flex-start;
+            background-color: #e0e7ff;
+            color: var(--primary);
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            margin-bottom: 1rem;
+        }
+
+        .app-card h3 {
+            font-size: 1.35rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .app-card p {
+            color: var(--muted);
+            font-size: 0.95rem;
+            margin-bottom: 1.5rem;
+            flex-grow: 1;
+        }
+
+        .features-list {
+            list-style: none;
+            margin-bottom: 1.5rem;
+            font-size: 0.9rem;
+        }
+
+        .features-list li {
+            margin-bottom: 0.4rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .features-list li::before {
+            content: "✓";
+            color: #10b981;
+            font-weight: bold;
+            margin-right: 0.5rem;
+        }
+
+        .btn {
+            display: inline-block;
+            text-align: center;
+            background-color: var(--primary);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: background-color 0.15s ease;
+        }
+
+        .btn:hover {
+            background-color: var(--primary-hover);
+        }
+
+        .placeholder-card {
+            border: 2px dashed var(--border);
+            background: transparent;
+            justify-content: center;
+            align-items: center;
+            color: var(--muted);
+            text-align: center;
+        }
+
+        .placeholder-card:hover {
+            transform: none;
+            box-shadow: none;
+        }
+
+        footer {
+            background-color: #1e293b;
+            color: #f8fafc;
+            padding: 3rem 2rem;
+            text-align: center;
+            margin-top: auto;
+        }
+
+        footer p {
+            font-size: 0.9rem;
+            color: #94a3b8;
+        }
+
+        @media (max-width: 640px) {
+            .hero h1 { font-size: 2.2rem; }
+            .apps-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="nav-container">
+            <a href="#" class="logo">KarolAppStudio</a>
+        </div>
+    </header>
+
+    <section class="hero">
+        <h1>Welcome to KarolAppStudio</h1>
+        <p>Creating simple, functional, and accessible applications designed to build good habits and help you grow every day.</p>
+    </section>
+
+    <main class="main-content">
+        <h2 class="section-title">Our Applications</h2>
+        
+        <div class="apps-grid">
+            <!-- Active App Card -->
+            <div class="app-card">
+                <div>
+                    <span class="app-badge">Habit & Study</span>
+                    <h3>ReadingsApp</h3>
+                    <p>A simple web application for following daily Bible readings based on the Christadelphian Bible Reading Companion by Robert Roberts.</p>
+                    <ul class="features-list">
+                        <li>Three systematic daily reading portions</li>
+                        <li>Support for multiple Indian language Bibles</li>
+                        <li>Clean, distraction-free interface</li>
+                    </ul>
+                </div>
+                <a href="https://karolappstudio.github.io/ReadingsApp/" class="btn" target="_blank" rel="noopener">Open Application</a>
+            </div>
+
+            <!-- Future Project Placeholder Card -->
+            <div class="app-card placeholder-card">
+                <div>
+                    <p style="font-size: 1.5rem; margin-bottom: 0.5rem;">🚀</p>
+                    <h3>New App Coming Soon</h3>
+                    <p>We are always working on building more toolsets and structured apps.</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 KarolAppStudio. Made with ❤️ to encourage consistent routines.</p>
+    </footer>
+
+</body>
+</html>
